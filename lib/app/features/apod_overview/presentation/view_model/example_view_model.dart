@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class EnableFaceIdViewModel extends GetxController {
+class ExampleViewModel extends GetxController {
   RxBool isLoading = false.obs;
 
   showLoading(value) {
