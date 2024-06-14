@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/constants/textstyles.dart';
-import 'package:nasa_apod_app/app/widgets/rounded_button.dart';
+import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/rounded_button.dart';
 
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog(
