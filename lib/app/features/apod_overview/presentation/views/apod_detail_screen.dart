@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/constants/constant.dart';
 import 'package:nasa_apod_app/app/core/constants/textstyles.dart';
+import 'package:nasa_apod_app/app/features/apod_overview/data/models/response/apod_response_model.dart';
 
 class ApodDetailScreen extends StatelessWidget {
-  const ApodDetailScreen({super.key});
+  final Apod apod;
+  const ApodDetailScreen({required this.apod, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class ApodDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "July 24, 2023",
+                  apod.date!,
                   style: bodyTextStyle.copyWith(fontSize: 14),
                 ),
                 IconButton(
@@ -60,14 +63,14 @@ class ApodDetailScreen extends StatelessWidget {
               ],
             ),
             Text(
-              "Betelgeuse Super Novae Phenomenon Captured",
+              apod.title!,
               style: headingTextStyle.copyWith(fontSize: 24.sp),
             ),
             SizedBox(
               height: 20.h,
             ),
             Text(
-              'Description ',
+              apod.explanation!,
               textAlign: TextAlign.left,
               style: bodyTextStyle.copyWith(),
             ),
@@ -78,16 +81,31 @@ class ApodDetailScreen extends StatelessWidget {
   }
 
   topSection() {
+    final cardHeight = 1.sh - 336.h;
     return Container(
       height: 1.sh - 336.h,
       color: primaryColor,
       child: Stack(
         children: [
-          FadeInImage.assetNetwork(
-            height: 1.sh - 336.h,
-            placeholder: 'assets/images/placeholder.jpeg',
-            image: 'https://apod.nasa.gov/apod/image/2401/ngc1232b_vlt_960.jpg',
-            fit: BoxFit.fitHeight,
+          CachedNetworkImage(
+            imageUrl: apod.url!,
+            height: cardHeight,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Container(
+              height: cardHeight,
+              width: double.infinity,
+              color: Colors.grey[700],
+              child: const Center(
+                child: Icon(
+                  Icons.image,
+                  size: 80,
+                  color: Colors.white60,
+                ),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fadeInDuration: const Duration(milliseconds: 500),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 50.0.h, horizontal: 10.w),

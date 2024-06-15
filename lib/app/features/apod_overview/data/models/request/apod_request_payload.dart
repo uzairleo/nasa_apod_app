@@ -2,28 +2,28 @@ import 'package:equatable/equatable.dart';
 import 'package:nasa_apod_app/app/core/utilities/json_utils.dart';
 
 class ApodRequestPayload extends Equatable implements JsonConverter {
-  final String startDate;
-  final String endDate;
+  final String count;
 
   const ApodRequestPayload({
-    required this.startDate,
-    required this.endDate,
+    required this.count,
   });
 
   @override
   ApodRequestPayload fromJson(Map<String, dynamic> json) {
     return ApodRequestPayload(
-        startDate: json["start_date"], endDate: json['end_date']);
+      count: json["count"],
+    );
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data["start_date"] = startDate;
-    data["end_date"] = endDate;
+    data["count"] = count;
     return data;
   }
 
   @override
-  List<Object?> get props => [startDate, endDate];
+  List<Object?> get props => [
+        count,
+      ];
 }

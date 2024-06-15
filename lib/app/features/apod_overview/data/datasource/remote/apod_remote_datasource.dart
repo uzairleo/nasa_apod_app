@@ -19,8 +19,7 @@ class ApodRemoteDatasourceImpl implements ApodRemoteDatasource {
       Request<ApodRequestPayload> request) async {
     final data = await _dioClient.get(Urls.getApods, queryParameters: {
       "api_key": Config.NASA_API_KEY,
-      "start_date": request.data.startDate,
-      "end_date": request.data.endDate,
+      "count": request.data.count,
     });
     return ApodResponseModel.fromJson(data ?? {});
   }
