@@ -35,6 +35,10 @@ class ApodViewModel extends GetxController {
     super.onInit();
   }
 
+  ///
+  /// This method will fetch APODs in a paginated manner. It will also cache the APODs for future use when
+  /// no connection is available.
+  ///
   Future<void> fetchApods({required int page, bool isRefresh = false}) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
 
@@ -80,11 +84,17 @@ class ApodViewModel extends GetxController {
     }
   }
 
+  ///
+  ///Method used for Pull to refresh Feature
+  ///
   Future<void> loadMore() async {
     currentPage++;
     await fetchApods(page: currentPage);
   }
 
+  ///
+  ///Method use for search bar
+  ///
   void filterApods(String query) {
     if (query.isEmpty) {
       filteredApods.value = apods;

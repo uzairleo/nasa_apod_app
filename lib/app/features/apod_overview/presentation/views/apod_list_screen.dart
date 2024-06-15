@@ -19,6 +19,7 @@ class ApodListScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
+            ///Checking if scrolling reach to the end then reload more Apods
             if (scrollInfo.metrics.pixels ==
                     scrollInfo.metrics.maxScrollExtent &&
                 !viewModel.isLoadingMore.value) {
@@ -27,6 +28,7 @@ class ApodListScreen extends StatelessWidget {
             return false;
           },
           child: RefreshIndicator(
+            //On Pull to refresh Indicator
             onRefresh: () async {
               await viewModel.fetchApods(page: 1, isRefresh: true);
             },
@@ -61,6 +63,8 @@ class ApodListScreen extends StatelessWidget {
             ),
           ),
         ),
+
+        /// Floating action button used for scrolling the list to the top when the user taps it.
         floatingActionButton: Obx(
           () => viewModel.isFabVisible.value
               ? FloatingActionButton(

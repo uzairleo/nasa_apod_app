@@ -14,6 +14,9 @@ import 'package:nasa_apod_app/app/features/apod_overview/domain/usecase/fetch_ap
 
 GetIt locator = GetIt.instance;
 
+///
+///Setup locator is used for registering various Dependencies like data sources, repositories, and use cases.
+///
 setupLocator() async {
   /// **************** NASA APODS ******************
   locator.registerLazySingleton<ApodRemoteDatasource>(
