@@ -23,7 +23,7 @@ class ApodImageTile extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               Get.to(ApodDetailScreen(apod: apod!),
-                  transition: Transition.topLevel);
+                  transition: Transition.size);
             },
             child: Card(
               color: secondaryColor,
@@ -69,7 +69,7 @@ class ApodImageTile extends StatelessWidget {
                       '${apod!.date}',
                       style: bodyTextStyle.copyWith(
                         fontSize: 12.0,
-                        color: Colors.white70,
+                        color: Colors.white,
                       ),
                     ),
                   ],

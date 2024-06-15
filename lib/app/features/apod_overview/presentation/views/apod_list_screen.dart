@@ -28,12 +28,12 @@ class ApodListScreen extends StatelessWidget {
                 header(),
 
                 ///
-                ///Search bar on top
+                /// Search bar on top
                 ///
-                searhcBar(),
+                searchBar(viewModel),
 
                 ///
-                ///List of APOD images
+                /// List of APOD images
                 ///
                 viewModel.isLoading.value
                     ? shimmerListView()
@@ -46,7 +46,7 @@ class ApodListScreen extends StatelessWidget {
     );
   }
 
-  header() {
+  Widget header() {
     return Padding(
       padding: EdgeInsets.only(top: 50.h, bottom: 30.h),
       child: Row(
@@ -62,10 +62,11 @@ class ApodListScreen extends StatelessWidget {
     );
   }
 
-  searhcBar() {
+  Widget searchBar(ApodViewModel viewModel) {
     return SizedBox(
       height: 40.h,
       child: TextField(
+        onChanged: viewModel.filterApods,
         decoration: InputDecoration(
           hintText: 'Search...',
           prefixIcon: const Icon(
@@ -86,24 +87,25 @@ class ApodListScreen extends StatelessWidget {
     );
   }
 
-  apodListView(ApodViewModel viewModel) {
+  Widget apodListView(ApodViewModel viewModel) {
     return ListView.builder(
       primary: true,
       shrinkWrap: true,
-      itemCount: viewModel.apodResponseModel!.apods.length,
+      itemCount: viewModel.filteredApods.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) => ApodImageTile(
-        apod: viewModel.apodResponseModel!.apods[index],
+        apod: viewModel.filteredApods[index],
       ),
     );
   }
 
   Widget shimmerListView() {
     return ListView.builder(
-        primary: true,
-        shrinkWrap: true,
-        itemCount: 10,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (context, index) => const ShimmerApodTile());
+      primary: true,
+      shrinkWrap: true,
+      itemCount: 5,
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) => const ShimmerApodTile(),
+    );
   }
 }
