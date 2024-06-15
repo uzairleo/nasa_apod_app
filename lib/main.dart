@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/constants/constant.dart';
-import 'package:nasa_apod_app/app/features/apod_overview/presentation/views/example_view.dart';
+import 'package:nasa_apod_app/app/features/apod_overview/presentation/views/apod_list_screen.dart';
 import 'package:nasa_apod_app/injection_container.dart';
 
 void main() async {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: secondaryColor),
           useMaterial3: true,
         ),
-        home: const ExampleScreen(),
+        home: const ApodListScreen(),
       ),
     );
   }
