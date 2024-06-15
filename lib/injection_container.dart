@@ -41,7 +41,7 @@ setupLocator() async {
   locator.registerSingleton<ExceptionHandlerServices>(ExceptionHandlerImpl());
 // *************************************************
 
-//  **************** LocalStorageService ******************
+//  **************** CacheStorageService ******************
   locator.registerSingleton(await CacheStorageService.create());
 // *************************************************
 }
