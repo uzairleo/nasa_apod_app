@@ -137,7 +137,7 @@ class ApodListScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 Text(
-                  "No Astronomy Pictures of the Day (APODs) available.Please check your connection and try again. Ensure you've connected at least once to load data.",
+                  "No Astronomy Pictures of the Day (APODs) available.",
                   textAlign: TextAlign.center,
                   style: bodyTextStyle2,
                 ),
