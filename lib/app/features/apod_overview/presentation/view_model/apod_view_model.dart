@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/Exception/exception_handler_services.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/request/apod_request_payload.dart';
@@ -9,43 +10,85 @@ import 'package:nasa_apod_app/injection_container.dart';
 
 class ApodViewModel extends GetxController {
   RxBool isLoading = false.obs;
+  RxBool isLoadingMore = false.obs;
+  RxBool isFabVisible = false.obs;
+  RxList<Apod> apods = <Apod>[].obs;
   RxList<Apod> filteredApods = <Apod>[].obs;
   final FetchApodsUsecase _fetchApods = locator<FetchApodsUsecase>();
 
   final ExceptionHandlerServices _exceptionHandler =
       locator<ExceptionHandlerServices>();
   ApodResponseModel? apodResponseModel;
+  int currentPage = 1;
+  static const int pageSize = 10;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void onInit() async {
-    await fetchAllApods();
+    scrollController.addListener(_scrollListener);
+    await fetchApods(page: currentPage);
     super.onInit();
   }
 
-  Future<void> fetchAllApods() async {
-    isLoading(true);
-    final result = await _fetchApods(const ApodRequestPayload(
-      count: "10",
-    ));
+  Future<void> fetchApods({required int page}) async {
+    if (page == 1) {
+      isLoading(true);
+    } else {
+      isLoadingMore(true);
+    }
+
+    final result =
+        await _fetchApods(const ApodRequestPayload(count: "$pageSize"));
     result.fold((failure) => _exceptionHandler.handleException(failure),
         (data) {
       apodResponseModel = data;
-      filteredApods.value = data.apods;
+      if (page == 1) {
+        apods.value = data.apods;
+        filteredApods.value = data.apods;
+      } else {
+        apods.addAll(data.apods);
+        filteredApods.addAll(data.apods);
+      }
     });
     log("Apods Response-> ${apodResponseModel?.toJson()}");
-    isLoading(false);
+
+    if (page == 1) {
+      isLoading(false);
+    } else {
+      isLoadingMore(false);
+    }
+  }
+
+  Future<void> loadMore() async {
+    currentPage++;
+    await fetchApods(page: currentPage);
   }
 
   void filterApods(String query) {
     if (query.isEmpty) {
-      filteredApods.value = apodResponseModel?.apods ?? [];
+      filteredApods.value = apods;
     } else {
-      filteredApods.value = apodResponseModel?.apods
-              .where((apod) =>
-                  apod.title!.toLowerCase().contains(query.toLowerCase()) ||
-                  apod.date!.contains(query))
-              .toList() ??
-          [];
+      filteredApods.value = apods
+          .where((apod) =>
+              apod.title!.toLowerCase().contains(query.toLowerCase()) ||
+              apod.date!.contains(query))
+          .toList();
+    }
+  }
+
+  void scrollToTop() {
+    scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels > 200) {
+      isFabVisible(true);
+    } else {
+      isFabVisible(false);
     }
   }
 }
