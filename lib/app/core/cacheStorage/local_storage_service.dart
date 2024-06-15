@@ -15,6 +15,9 @@ class LocalStorageService {
 
   static const String apodsKey = 'apods';
 
+  ///
+  ///This method will cache the first 10 apods which will be loaded when connectivity== offline
+  ///
   Future<void> cacheApods(List<Apod> apods) async {
     try {
       await _storage.write(
