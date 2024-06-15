@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:nasa_apod_app/app/core/Exception/exception_handler_services.dart';
+import 'package:nasa_apod_app/app/core/cacheStorage/local_storage_service.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/request/apod_request_payload.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/response/apod_response_model.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/domain/usecase/fetch_apods_usecase.dart';
@@ -15,6 +17,8 @@ class ApodViewModel extends GetxController {
   RxList<Apod> apods = <Apod>[].obs;
   RxList<Apod> filteredApods = <Apod>[].obs;
   final FetchApodsUsecase _fetchApods = locator<FetchApodsUsecase>();
+  final LocalStorageService _localStorageService =
+      locator<LocalStorageService>();
 
   final ExceptionHandlerServices _exceptionHandler =
       locator<ExceptionHandlerServices>();
@@ -32,6 +36,8 @@ class ApodViewModel extends GetxController {
   }
 
   Future<void> fetchApods({required int page, bool isRefresh = false}) async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+
     if (page == 1 || isRefresh) {
       isLoading(true);
       if (isRefresh) currentPage = 1; // Reset the current page if refreshing
@@ -39,23 +45,33 @@ class ApodViewModel extends GetxController {
       isLoadingMore(true);
     }
 
-    final result =
-        await _fetchApods(const ApodRequestPayload(count: "$pageSize"));
-    result.fold(
-      (failure) => _exceptionHandler.handleException(failure),
-      (data) {
-        apodResponseModel = data;
-        if (page == 1 || isRefresh) {
-          apods.value = data.apods;
-          filteredApods.value = data.apods;
-        } else {
-          apods.addAll(data.apods);
-          filteredApods.addAll(data.apods);
-        }
-      },
-    );
+    if (connectivityResult == ConnectivityResult.none) {
+      // No internet connection, load from cache
+      final cachedData = _localStorageService.getCachedApods();
+      apods.value = cachedData;
+      filteredApods.value = apods;
+    } else {
+      // Fetch from API
+      final result =
+          await _fetchApods(const ApodRequestPayload(count: "$pageSize"));
+      result.fold(
+        (failure) => _exceptionHandler.handleException(failure),
+        (data) {
+          apodResponseModel = data;
+          if (page == 1 || isRefresh) {
+            apods.value = data.apods;
+            filteredApods.value = data.apods;
+            _localStorageService
+                .cacheApods(data.apods); // Cache the first 10 items
+          } else {
+            apods.addAll(data.apods);
+            filteredApods.addAll(data.apods);
+          }
+        },
+      );
 
-    log("Apods Response-> ${apodResponseModel?.toJson()}");
+      log("Apods Response-> ${apodResponseModel?.toJson()}");
+    }
 
     if (page == 1 || isRefresh) {
       isLoading(false);
@@ -84,7 +100,7 @@ class ApodViewModel extends GetxController {
   void scrollToTop() {
     scrollController.animateTo(
       0,
-      duration: const Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }

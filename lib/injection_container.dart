@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nasa_apod_app/app/core/Exception/exception_handler_impl.dart';
 import 'package:nasa_apod_app/app/core/Exception/exception_handler_services.dart';
+import 'package:nasa_apod_app/app/core/cacheStorage/local_storage_service.dart';
 import 'package:nasa_apod_app/app/core/httpClient/api_response_handler.dart';
 import 'package:nasa_apod_app/app/core/httpClient/dio_implementation.dart';
 import 'package:nasa_apod_app/app/core/httpClient/dio_service.dart';
@@ -38,5 +39,9 @@ setupLocator() async {
 
 //  **************** Utils ******************
   locator.registerSingleton<ExceptionHandlerServices>(ExceptionHandlerImpl());
+// *************************************************
+
+//  **************** LocalStorageService ******************
+  locator.registerSingleton(await LocalStorageService.create());
 // *************************************************
 }
