@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/constants/constant.dart';
+import 'package:nasa_apod_app/app/core/constants/textstyles.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/presentation/view_model/apod_view_model.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/apod_image_tile.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/image_container.dart';
@@ -47,7 +48,7 @@ class ApodListScreen extends StatelessWidget {
                     searchBar(viewModel),
 
                     ///
-                    /// List of APOD images
+                    /// List of APOD images with meta data
                     ///
                     viewModel.isLoading.value
                         ? shimmerListView()
@@ -118,15 +119,36 @@ class ApodListScreen extends StatelessWidget {
   }
 
   Widget apodListView(ApodViewModel viewModel) {
-    return ListView.builder(
-      primary: true,
-      shrinkWrap: true,
-      itemCount: viewModel.filteredApods.length,
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) => ApodImageTile(
-        apod: viewModel.filteredApods[index],
-      ),
-    );
+    return viewModel.filteredApods.isEmpty
+        ? Padding(
+            padding: EdgeInsets.only(top: 140.h),
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.sync_problem,
+                  size: 80,
+                  color: Colors.white70,
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Text(
+                  "No Astronomy Pictures of the Day (APODs) available.Please check your connection and try again. Ensure you've connected at least once to load data.",
+                  textAlign: TextAlign.center,
+                  style: bodyTextStyle2,
+                ),
+              ],
+            ),
+          )
+        : ListView.builder(
+            primary: true,
+            shrinkWrap: true,
+            itemCount: viewModel.filteredApods.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => ApodImageTile(
+              apod: viewModel.filteredApods[index],
+            ),
+          );
   }
 
   Widget shimmerListView() {

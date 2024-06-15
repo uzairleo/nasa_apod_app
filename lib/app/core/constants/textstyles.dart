@@ -15,10 +15,10 @@ var bodyTextStyle = TextStyle(
     fontFamily: GoogleFonts.raleway().fontFamily);
 
 var bodyTextStyle2 = TextStyle(
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w400,
-    color: Colors.white,
-    fontFamily: GoogleFonts.raleway().fontFamily);
+  fontSize: 14.sp,
+  fontWeight: FontWeight.w400,
+  color: Colors.white,
+);
 
 var buttonTextStyle = TextStyle(
     fontSize: 16.sp,
