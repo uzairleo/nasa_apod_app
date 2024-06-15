@@ -16,31 +16,56 @@ class ApodListScreen extends StatelessWidget {
       init: ApodViewModel(),
       builder: (viewModel) => Scaffold(
         backgroundColor: primaryColor,
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          primary: true,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 26.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                header(),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent &&
+                !viewModel.isLoadingMore.value) {
+              viewModel.loadMore();
+            }
+            return false;
+          },
+          child: SingleChildScrollView(
+            controller: viewModel.scrollController,
+            physics: const BouncingScrollPhysics(),
+            // primary: true,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  header(),
 
-                ///
-                /// Search bar on top
-                ///
-                searchBar(viewModel),
+                  ///
+                  /// Search bar on top
+                  ///
+                  searchBar(viewModel),
 
-                ///
-                /// List of APOD images
-                ///
-                viewModel.isLoading.value
-                    ? shimmerListView()
-                    : apodListView(viewModel),
-              ],
+                  ///
+                  /// List of APOD images
+                  ///
+                  viewModel.isLoading.value
+                      ? shimmerListView()
+                      : apodListView(viewModel),
+
+                  if (viewModel.isLoadingMore.value) shimmerListView(),
+                ],
+              ),
             ),
           ),
+        ),
+        floatingActionButton: Obx(
+          () => viewModel.isFabVisible.value
+              ? FloatingActionButton(
+                  backgroundColor: fabColor,
+                  onPressed: viewModel.scrollToTop,
+                  child: const Icon(
+                    Icons.arrow_upward,
+                    color: Colors.white,
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
       ),
     );
@@ -103,7 +128,7 @@ class ApodListScreen extends StatelessWidget {
     return ListView.builder(
       primary: true,
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: 10,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) => const ShimmerApodTile(),
     );
