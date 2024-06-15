@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:nasa_apod_app/app/core/Exception/exception_handler_services.dart';
-import 'package:nasa_apod_app/app/core/cacheStorage/local_storage_service.dart';
+import 'package:nasa_apod_app/app/core/cacheStorage/cache_storage_service.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/request/apod_request_payload.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/response/apod_response_model.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/domain/usecase/fetch_apods_usecase.dart';
@@ -17,8 +17,8 @@ class ApodViewModel extends GetxController {
   RxList<Apod> apods = <Apod>[].obs;
   RxList<Apod> filteredApods = <Apod>[].obs;
   final FetchApodsUsecase _fetchApods = locator<FetchApodsUsecase>();
-  final LocalStorageService _localStorageService =
-      locator<LocalStorageService>();
+  final CacheStorageService _localStorageService =
+      locator<CacheStorageService>();
 
   final ExceptionHandlerServices _exceptionHandler =
       locator<ExceptionHandlerServices>();
@@ -100,7 +100,7 @@ class ApodViewModel extends GetxController {
   void scrollToTop() {
     scrollController.animateTo(
       0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
   }
