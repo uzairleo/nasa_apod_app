@@ -24,6 +24,13 @@ NASA APOD is a Flutter application that displays NASA's Astronomy Picture of the
 
 This project was developed by [uzairleo](https://uzairleo.tech/) as a technical assessment for CloudWalk. It demonstrates the use of various Flutter development practices, including Test-driven development with MVVM & state management, API integration, and offline support.
 
+
+https://github.com/uzairleo/nasa_apod_app/assets/52172428/daf2a768-0604-419c-bdd7-5c036cf2f785
+
+
+https://github.com/uzairleo/nasa_apod_app/assets/52172428/44f44e99-7528-4dbe-8e52-9a3a9e2a24bf
+
+
 ## Getting Started
 
 ### Prerequisites
