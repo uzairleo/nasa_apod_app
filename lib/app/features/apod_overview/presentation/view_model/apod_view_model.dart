@@ -21,6 +21,7 @@ class ApodViewModel extends GetxController {
   ApodResponseModel? apodResponseModel;
   int currentPage = 1;
   static const int pageSize = 10;
+
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -30,29 +31,33 @@ class ApodViewModel extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchApods({required int page}) async {
-    if (page == 1) {
+  Future<void> fetchApods({required int page, bool isRefresh = false}) async {
+    if (page == 1 || isRefresh) {
       isLoading(true);
+      if (isRefresh) currentPage = 1; // Reset the current page if refreshing
     } else {
       isLoadingMore(true);
     }
 
     final result =
         await _fetchApods(const ApodRequestPayload(count: "$pageSize"));
-    result.fold((failure) => _exceptionHandler.handleException(failure),
-        (data) {
-      apodResponseModel = data;
-      if (page == 1) {
-        apods.value = data.apods;
-        filteredApods.value = data.apods;
-      } else {
-        apods.addAll(data.apods);
-        filteredApods.addAll(data.apods);
-      }
-    });
+    result.fold(
+      (failure) => _exceptionHandler.handleException(failure),
+      (data) {
+        apodResponseModel = data;
+        if (page == 1 || isRefresh) {
+          apods.value = data.apods;
+          filteredApods.value = data.apods;
+        } else {
+          apods.addAll(data.apods);
+          filteredApods.addAll(data.apods);
+        }
+      },
+    );
+
     log("Apods Response-> ${apodResponseModel?.toJson()}");
 
-    if (page == 1) {
+    if (page == 1 || isRefresh) {
       isLoading(false);
     } else {
       isLoadingMore(false);

@@ -25,32 +25,37 @@ class ApodListScreen extends StatelessWidget {
             }
             return false;
           },
-          child: SingleChildScrollView(
-            controller: viewModel.scrollController,
-            physics: const BouncingScrollPhysics(),
-            // primary: true,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 26.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  header(),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await viewModel.fetchApods(page: 1, isRefresh: true);
+            },
+            child: SingleChildScrollView(
+              controller: viewModel.scrollController,
+              physics: const BouncingScrollPhysics(),
+              // primary: true,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 26.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    header(),
 
-                  ///
-                  /// Search bar on top
-                  ///
-                  searchBar(viewModel),
+                    ///
+                    /// Search bar on top
+                    ///
+                    searchBar(viewModel),
 
-                  ///
-                  /// List of APOD images
-                  ///
-                  viewModel.isLoading.value
-                      ? shimmerListView()
-                      : apodListView(viewModel),
+                    ///
+                    /// List of APOD images
+                    ///
+                    viewModel.isLoading.value
+                        ? shimmerListView()
+                        : apodListView(viewModel),
 
-                  if (viewModel.isLoadingMore.value) shimmerListView(),
-                ],
+                    if (viewModel.isLoadingMore.value) shimmerListView(),
+                  ],
+                ),
               ),
             ),
           ),
