@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class ExampleViewModel extends GetxController {
+class ApodViewModel extends GetxController {
   RxBool isLoading = false.obs;
 
   showLoading(value) {
