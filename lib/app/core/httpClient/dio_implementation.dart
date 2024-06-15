@@ -34,10 +34,8 @@ class DioClient implements DioServices {
 
   @override
   setHttpHeaders({String? token, String? contentType}) {
-    final String? idToken = 'ID_TOKEN';
     Map<String, String> headers = {};
     headers[HttpHeaders.contentTypeHeader] = contentType!;
-    if (idToken != null) headers[HttpHeaders.authorizationHeader] = idToken;
     return headers;
   }
 

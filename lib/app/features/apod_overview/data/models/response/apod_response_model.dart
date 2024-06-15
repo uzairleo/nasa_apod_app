@@ -9,7 +9,10 @@ class ApodResponseModel extends Equatable implements JsonConverter {
   });
 
   factory ApodResponseModel.fromJson(List<dynamic> json) {
-    List<Apod> apodList = json.map((i) => Apod.fromJson(i)).toList();
+    List<Apod> apodList = json
+        .map((i) => Apod.fromJson(i))
+        .where((apod) => apod.mediaType == 'image')
+        .toList();
     return ApodResponseModel(apods: apodList);
   }
 
@@ -51,7 +54,7 @@ class Apod {
   Apod.fromJson(json) {
     date = json['date'];
     explanation = json['explanation'];
-    hdurl = json['hdurl'];
+    hdurl = json['hdurl'] ?? "";
     mediaType = json['media_type'];
     serviceVersion = json['service_version'];
     title = json['title'];

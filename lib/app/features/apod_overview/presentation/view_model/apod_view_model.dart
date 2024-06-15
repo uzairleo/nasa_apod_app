@@ -14,11 +14,17 @@ class ApodViewModel extends GetxController {
   final ExceptionHandlerServices _exceptionHandler =
       locator<ExceptionHandlerServices>();
   ApodResponseModel? apodResponseModel;
+  @override
+  void onInit() async {
+    await fetchAllApods();
+    super.onInit();
+  }
 
-  Future<void> fetchRegistrant() async {
+  Future<void> fetchAllApods() async {
     isLoading(true);
-    final result = await _fetchApods(
-        const ApodRequestPayload(startDate: "startDate", endDate: "endDate"));
+    final result = await _fetchApods(const ApodRequestPayload(
+      count: "10",
+    ));
     result.fold((failure) => _exceptionHandler.handleException(failure),
         (data) {
       apodResponseModel = data;

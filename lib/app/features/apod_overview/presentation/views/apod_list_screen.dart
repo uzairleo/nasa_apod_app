@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:nasa_apod_app/app/core/constants/constant.dart';
+import 'package:nasa_apod_app/app/features/apod_overview/presentation/view_model/apod_view_model.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/apod_image_tile.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/image_container.dart';
+import 'package:nasa_apod_app/app/features/apod_overview/presentation/widgets/shimmer_apod_tile.dart';
 
 class ApodListScreen extends StatelessWidget {
   const ApodListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: primaryColor,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        primary: true,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 26.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              header(),
+    return GetX<ApodViewModel>(
+      init: ApodViewModel(),
+      builder: (viewModel) => Scaffold(
+        backgroundColor: primaryColor,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          primary: true,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 26.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                header(),
 
-              ///
-              ///Search bar on top
-              ///
-              searhcBar(),
+                ///
+                ///Search bar on top
+                ///
+                searhcBar(),
 
-              ///
-              ///List of APOD images
-              ///
-              apodListView(),
-            ],
+                ///
+                ///List of APOD images
+                ///
+                viewModel.isLoading.value
+                    ? shimmerListView()
+                    : apodListView(viewModel),
+              ],
+            ),
           ),
         ),
       ),
@@ -78,13 +86,24 @@ class ApodListScreen extends StatelessWidget {
     );
   }
 
-  apodListView() {
+  apodListView(ApodViewModel viewModel) {
     return ListView.builder(
       primary: true,
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount: viewModel.apodResponseModel!.apods.length,
       physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) => const ApodImageTile(),
+      itemBuilder: (context, index) => ApodImageTile(
+        apod: viewModel.apodResponseModel!.apods[index],
+      ),
     );
+  }
+
+  Widget shimmerListView() {
+    return ListView.builder(
+        primary: true,
+        shrinkWrap: true,
+        itemCount: 10,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) => const ShimmerApodTile());
   }
 }
