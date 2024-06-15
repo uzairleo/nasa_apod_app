@@ -8,11 +8,11 @@ import 'package:nasa_apod_app/injection_container.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
