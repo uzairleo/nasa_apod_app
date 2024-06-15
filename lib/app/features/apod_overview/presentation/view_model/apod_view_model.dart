@@ -9,11 +9,13 @@ import 'package:nasa_apod_app/injection_container.dart';
 
 class ApodViewModel extends GetxController {
   RxBool isLoading = false.obs;
+  RxList<Apod> filteredApods = <Apod>[].obs;
   final FetchApodsUsecase _fetchApods = locator<FetchApodsUsecase>();
 
   final ExceptionHandlerServices _exceptionHandler =
       locator<ExceptionHandlerServices>();
   ApodResponseModel? apodResponseModel;
+
   @override
   void onInit() async {
     await fetchAllApods();
@@ -28,8 +30,22 @@ class ApodViewModel extends GetxController {
     result.fold((failure) => _exceptionHandler.handleException(failure),
         (data) {
       apodResponseModel = data;
+      filteredApods.value = data.apods;
     });
     log("Apods Response-> ${apodResponseModel?.toJson()}");
     isLoading(false);
+  }
+
+  void filterApods(String query) {
+    if (query.isEmpty) {
+      filteredApods.value = apodResponseModel?.apods ?? [];
+    } else {
+      filteredApods.value = apodResponseModel?.apods
+              .where((apod) =>
+                  apod.title!.toLowerCase().contains(query.toLowerCase()) ||
+                  apod.date!.contains(query))
+              .toList() ??
+          [];
+    }
   }
 }
