@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nasa_apod_app/app/features/apod_overview/data/models/response/apod_response_model.dart';
 
-class LocalStorageService {
+class CacheStorageService {
   final GetStorage _storage;
 
-  LocalStorageService._create(this._storage);
+  CacheStorageService._create(this._storage);
 
-  static Future<LocalStorageService> create() async {
+  static Future<CacheStorageService> create() async {
     await GetStorage.init();
     final storage = GetStorage();
-    return LocalStorageService._create(storage);
+    return CacheStorageService._create(storage);
   }
 
   static const String apodsKey = 'apods';
