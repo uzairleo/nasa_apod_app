@@ -1,26 +1,28 @@
 # NASA APOD Viewer 
 
-NASA APOD is a Flutter application that displays NASA's Astronomy Picture of the Day (APOD). This app allows users to browse through the APODs, view details, search by title or date, and supports offline access with caching .
+NASA APOD is a Flutter application that displays NASA's Astronomy Picture of the Day (APOD). This app allows users to browse through the APODs, view details, search by title, and supports offline access with caching.
 
 ## Features
 
-- View the latest APODs with title, date, and image
+- 👨‍💻 TDD with Clean Architecture and MVVM approach
 
-- Search APODs by title or date
+- 🌠 View the latest APODs with title, date, and image
+ 
+- 🔍 Search APODs by title
 
-- Offline access with caching of the first 10 APODs
+- 📄 Pagination and pull-to-refresh functionality
 
-- Pagination and pull-to-refresh functionality
+- 🧩 State management using GetX
 
-- User-friendly messages for empty states
+- 🗃️ Dependency injection with GetIt
 
-- State management using GetX
+- 📡 Offline access with caching of APODs
 
-- Dependency injection with GetIt
+- 👍 User-friendly experience for error states)
 
 ## Purpose
 
-This project was developed as a technical assessment for CloudWalk. It demonstrates the use of various Flutter development practices, including state management, API integration, and offline support.
+This project was developed by [uzairleo](https://uzairleo.tech/) as a technical assessment for CloudWalk. It demonstrates the use of various Flutter development practices, including Test-driven development with MVVM & state management, API integration, and offline support.
 
 ## Getting Started
 
@@ -34,29 +36,29 @@ This project was developed as a technical assessment for CloudWalk. It demonstra
 
 1\. Clone the repository:
 
-   ```bash
+```bash
 
    git clone https://github.com/yourusername/nasa_apod_viewer.git
 
    cd nasa_apod_viewer
 
-   ```
+```
 
 2\. Install dependencies:
 
-   ```bash
+```bash
 
    flutter pub get
 
-   ```
+```
 
 3\. Run the application:
 
-   ```bash
+```bash
 
    flutter run
 
-   ```
+```
 
 ## Running Tests
 
@@ -80,7 +82,7 @@ The application uses GetX for state management, providing a simple and reactive 
 
 ### Caching
 
-GetStorage is used for caching the first 10 APODs to provide offline access.
+GetStorage is used for caching the APODs to provide offline access .
 
 ## Commit History
 
@@ -88,7 +90,7 @@ The following is a summary of the commit history that outlines the development p
 
 1\. **Initial Project Setup**:
 
-   ```plaintext
+```plaintext
 
    0b24a77 🎉 init: initial commit
 
@@ -102,11 +104,11 @@ The following is a summary of the commit history that outlines the development p
 
    c9fef73 🐛 fix: minor correction in test.dart
 
-   ```
+```
 
 2\. **UI Implementation**:
 
-   ```plaintext
+```plaintext
 
    b8fd091 🎨 feat: integrate APOD list view screen UI
 
@@ -116,11 +118,11 @@ The following is a summary of the commit history that outlines the development p
 
    07830d0 Merge pull request #4 from uzairleo/feature/apod-detail-ui
 
-   ```
+```
 
 3\. **API Integration**:
 
-   ```plaintext
+```plaintext
 
    64eb99f 🚀 feat: Integrate API with remote data source, domain layer, and ViewModel
 
@@ -128,31 +130,31 @@ The following is a summary of the commit history that outlines the development p
 
    0033b44 Merge pull request #5 from uzairleo/feature/apodlistview-api-integration
 
-   ```
+```
 
 4\. **ViewModel and UI Connection**:
 
-   ```plaintext
+```plaintext
 
    a030ddf ✨ feat: Connect ViewModel APOD response to UI with improvements
 
    00cd6bd Merge pull request #6 from uzairleo/feature/connect-viewmodel-to-ui
 
-   ```
+```
 
 5\. **Search Functionality**:
 
-   ```plaintext
+```plaintext
 
    36001d7 🔍 feat: Implemented search functionality in APOD list
 
    029686d Merge pull request #7 from uzairleo/feature/search-implementation
 
-   ```
+```
 
 6\. **Pagination and Pull-to-Refresh**:
 
-   ```plaintext
+```plaintext
 
    a2ecb2a ✨ feat: Implement pagination and FAB to scroll to top
 
@@ -168,11 +170,11 @@ The following is a summary of the commit history that outlines the development p
 
    43795c4 Merge pull request #10 from uzairleo/feature/pulltorefresh-integ
 
-   ```
+```
 
 7\. **Local Storage and Offline Support**:
 
-   ```plaintext
+```plaintext
 
    1a27f09 ✨ feat: Add LocalStorageService and integrate with dependency injection
 
@@ -180,27 +182,27 @@ The following is a summary of the commit history that outlines the development p
 
    7492266 Merge pull request #11 from uzairleo/feature/local-storage-service
 
-   ```
+```
 
 8\. **Refactoring**:
 
-   ```plaintext
+```plaintext
 
    613ba86 ♻️ refactor: Rename LocalStorageService to CacheStorageService
 
    8511d44 Merge pull request #12 from uzairleo/refactor/cache-storage-service
 
-   ```
+```
 
 9\. **User-Friendly Messages**:
 
-   ```plaintext
+```plaintext
 
    19cd5e0 ✨ feat: Add user-friendly message for empty APOD list
 
    fdac390 Merge pull request #13 from uzairleo/feature/empty-apod-list-message
 
-   ```
+```
 
 ## License
 
