@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       child: GetMaterialApp(
         title: 'NASA APOD App',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: secondaryColor),
           useMaterial3: true,
