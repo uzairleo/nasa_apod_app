@@ -210,7 +210,3 @@ The following is a summary of the commit history that outlines the development p
    fdac390 Merge pull request #13 from uzairleo/feature/empty-apod-list-message
 
 ```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
