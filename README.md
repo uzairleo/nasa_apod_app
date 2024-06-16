@@ -45,9 +45,9 @@ https://github.com/uzairleo/nasa_apod_app/assets/52172428/44f44e99-7528-4dbe-8e5
 
 ```bash
 
-   git clone https://github.com/yourusername/nasa_apod_viewer.git
+   git clone https://github.com/uzairleo/nasa_apod_app.git
 
-   cd nasa_apod_viewer
+   cd nasa_apod_app
 
 ```
 
